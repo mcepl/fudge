@@ -98,7 +98,7 @@ class patch(object):
             except:
                 etype, val, tb = sys.exc_info()
                 self.__exit__(etype, val, tb)
-                raise etype(val).with_traceback(tb)
+                six.reraise(etype, val, tb)
             else:
                 self.__exit__(None, None, None)
             return value
@@ -277,7 +277,7 @@ def patch_object(obj, attr_name, patched_value):
                     # We're at the top level module and it doesn't exist.
                     # Raise the first exception since it will make more sense:
                     etype, val, tb = exc
-                    raise etype(val).with_traceback(tb)
+                    six.reraise(etype, val, tb)
                 if not adjusted_path.count('.'):
                     at_top_level = True
         for part in obj_path.split('.')[1:]:
